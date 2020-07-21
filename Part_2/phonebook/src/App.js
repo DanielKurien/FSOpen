@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
-
+import personsService from "./services/persons";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
@@ -8,21 +7,37 @@ const App = () => {
   const [filter, setFilter] = useState("");
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons").then((response) => {
-      setPersons(response.data);
+    personsService.getAll().then((initialPersons) => {
+      setPersons(initialPersons);
     });
   }, []);
+
   const addPerson = (event) => {
     event.preventDefault();
+    const personObject = {
+      name: newName,
+      number: newNumber,
+    };
     const findPerson = persons.find((person) => person.name === newName);
     if (findPerson !== undefined) {
-      alert(`${newName} already exists in Phonebook`);
+      const updatePerson = window.confirm(
+        `${findPerson.name} already exists, replace the old number with a new one?`
+      );
+      if (updatePerson) {
+        personsService
+          .update(findPerson.id, personObject)
+          .then((returnedPerson) =>
+            setPersons(
+              persons.map((person) =>
+                person.id !== findPerson.id ? person : returnedPerson
+              )
+            )
+          );
+      }
     } else {
-      const personObject = {
-        name: newName,
-        number: newNumber,
-      };
-      setPersons(persons.concat(personObject));
+      personsService
+        .create(personObject)
+        .then((newPerson) => setPersons(persons.concat(newPerson)));
     }
     setNewName("");
     setNewNumber("");
@@ -44,6 +59,18 @@ const App = () => {
     person.name.toLowerCase().startsWith(filter.toLowerCase())
   );
 
+  const deletePerson = (id) => {
+    let person = persons.find((person) => person.id === id);
+    let confirm = window.confirm(`Delete ${person.name} ?`);
+    if (confirm) {
+      personsService
+        .remove(id)
+        .then((response) =>
+          setPersons(persons.filter((person) => person.id !== id))
+        );
+    }
+  };
+
   return (
     <div>
       <h2>Phonebook</h2>
@@ -64,8 +91,9 @@ const App = () => {
       </form>
       <h2>Numbers</h2>
       {filteredPersons.map((person) => (
-        <p key={person.name}>
-          {person.name} {person.number}
+        <p key={person.id}>
+          {person.name} {person.number}{" "}
+          <button onClick={() => deletePerson(person.id)}>delete</button>
         </p>
       ))}
     </div>
