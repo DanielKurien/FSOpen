@@ -1,4 +1,5 @@
 import React from "react";
+import Weather from "./Weather";
 const Countries = ({ filteredCountries }) => {
   if (filteredCountries.length === 1) {
     const country = filteredCountries[0];
@@ -11,14 +12,15 @@ const Countries = ({ filteredCountries }) => {
         <p>
           <strong>Population:</strong> {country.population} people
         </p>
-        <h2>Spoken Languages</h2>
+        <h3>Spoken Languages</h3>
         <ul>
           {country.languages.map((language) => (
             <li key={language.name}>{language.name}</li>
           ))}
         </ul>
 
-        <img width="300" src={country.flag} alt={`${country.name}'s Flag`} />
+        <img width="200" src={country.flag} alt={`${country.name}'s Flag`} />
+        <Weather capital={country.capital} />
       </>
     );
   } else if (filteredCountries.length < 10) {
