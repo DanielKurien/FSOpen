@@ -1,0 +1,19 @@
+{
+  "persons": [
+    {
+      "name": "Arto Hellas",
+      "phone": "040-123456",
+      "id": 1
+    },
+    {
+      "name": "Anthony Towns",
+      "phone": "07-3483-23",
+      "id": 2
+    },
+    {
+      "name": "Dan Ambramov",
+      "phone": "7327-3283",
+      "id": 3
+    }
+  ]
+}
