@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import personsService from "./services/persons";
+import Notification from "./components/Notification";
 const App = () => {
   const [persons, setPersons] = useState([]);
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [filter, setFilter] = useState("");
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   useEffect(() => {
     personsService.getAll().then((initialPersons) => {
@@ -35,9 +38,13 @@ const App = () => {
           );
       }
     } else {
-      personsService
-        .create(personObject)
-        .then((newPerson) => setPersons(persons.concat(newPerson)));
+      personsService.create(personObject).then((newPerson) => {
+        setPersons(persons.concat(newPerson));
+        setSuccessMessage(`${newPerson.name} was added to the server`);
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 5000);
+      });
     }
     setNewName("");
     setNewNumber("");
@@ -67,13 +74,23 @@ const App = () => {
         .remove(id)
         .then((response) =>
           setPersons(persons.filter((person) => person.id !== id))
-        );
+        )
+        .catch((error) => {
+          setErrorMessage(`${person.name} was already deleted from the server`);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
   };
 
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification
+        errorMessage={errorMessage}
+        successMessage={successMessage}
+      />
       <div>
         filter shown with <input onChange={handleFilterChange} value={filter} />
       </div>
