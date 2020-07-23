@@ -1,8 +1,11 @@
 const express = require("express");
 const { response } = require("express");
 const app = express();
+const morgan = require("morgan");
 
 app.use(express.json());
+app.use(morgan("tiny"));
+
 let persons = [
   {
     name: "Arto Hellas",
@@ -52,7 +55,6 @@ app.post("/api/persons", (req, res) => {
     };
 
     persons = persons.concat(persons);
-
     res.json(person);
   }
 });
