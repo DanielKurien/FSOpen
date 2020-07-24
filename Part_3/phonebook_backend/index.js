@@ -11,22 +11,22 @@ app.use(express.static("build"));
 let persons = [
   {
     name: "Arto Hellas",
-    phone: "040-123456",
+    number: "040-123456",
     id: 1,
   },
   {
     name: "Anthony Towns",
-    phone: "07-3483-23",
+    number: "07-3483-23",
     id: 2,
   },
   {
     name: "Dan Ambramov",
-    phone: "7327-3283",
+    number: "7327-3283",
     id: 3,
   },
   {
     name: "Mary Poppendieck",
-    phone: "043-1248",
+    number: "043-1248",
     id: 4,
   },
 ];
@@ -36,9 +36,8 @@ app.get("/api/persons", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  const body = req.body;
-
-  if (!body.name || !body.phone) {
+  let body = req.body;
+  if (!body.name || !body.number) {
     return res.status(404).json({
       error: "name or phone number missing",
     });
@@ -46,14 +45,14 @@ app.post("/api/persons", (req, res) => {
 
   const duplicate = persons.find((person) => person.name === body.name);
 
-  if (duplicate) {
+  if (duplicate !== undefined) {
     return res.status(404).json({
       error: "name already exists",
     });
   } else {
     const person = {
       name: body.name,
-      phone: body.phone,
+      number: body.number,
       id: Math.round(Math.random() * 1000),
     };
 
