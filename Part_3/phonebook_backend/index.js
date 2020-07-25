@@ -1,5 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
+const Person = require("./models/person");
 const morgan = require("morgan");
 const cors = require("cors");
 
@@ -8,31 +10,8 @@ app.use(morgan("tiny"));
 app.use(cors());
 app.use(express.static("build"));
 
-let persons = [
-  {
-    name: "Arto Hellas",
-    number: "040-123456",
-    id: 1,
-  },
-  {
-    name: "Anthony Towns",
-    number: "07-3483-23",
-    id: 2,
-  },
-  {
-    name: "Dan Ambramov",
-    number: "7327-3283",
-    id: 3,
-  },
-  {
-    name: "Mary Poppendieck",
-    number: "043-1248",
-    id: 4,
-  },
-];
-
 app.get("/api/persons", (req, res) => {
-  res.json(persons);
+  Person.find({}).then((persons) => res.json(persons));
 });
 
 app.post("/api/persons", (req, res) => {
@@ -41,23 +20,12 @@ app.post("/api/persons", (req, res) => {
     return res.status(404).json({
       error: "name or phone number missing",
     });
-  }
-
-  const duplicate = persons.find((person) => person.name === body.name);
-
-  if (duplicate !== undefined) {
-    return res.status(404).json({
-      error: "name already exists",
-    });
   } else {
-    const person = {
+    const person = new Person({
       name: body.name,
       number: body.number,
-      id: Math.round(Math.random() * 1000),
-    };
-
-    persons = persons.concat(persons);
-    res.json(person);
+    });
+    person.save().then((savedPerson) => res.json(savedPerson));
   }
 });
 
