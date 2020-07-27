@@ -38,13 +38,21 @@ const App = () => {
           );
       }
     } else {
-      personsService.create(personObject).then((newPerson) => {
-        setPersons(persons.concat(newPerson));
-        setSuccessMessage(`${newPerson.name} was added to the server`);
-        setTimeout(() => {
-          setSuccessMessage(null);
-        }, 5000);
-      });
+      personsService
+        .create(personObject)
+        .then((newPerson) => {
+          setPersons(persons.concat(newPerson));
+          setSuccessMessage(`${newPerson.name} was added to the server`);
+          setTimeout(() => {
+            setSuccessMessage(null);
+          }, 5000);
+        })
+        .catch((error) => {
+          setErrorMessage(error.response.data);
+          setTimeout(() => {
+            setErrorMessage(null);
+          }, 5000);
+        });
     }
     setNewName("");
     setNewNumber("");
