@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-
 const password = process.argv[2];
 
 const url = `mongodb+srv://fullstack:${password}@cluster0.n2h80.mongodb.net/Phonebook?retryWrites=true&w=majority`;
