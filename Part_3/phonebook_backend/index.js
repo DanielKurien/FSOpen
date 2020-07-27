@@ -14,7 +14,7 @@ app.get("/api/persons", (req, res) => {
   Person.find({}).then((persons) => res.json(persons));
 });
 
-app.post("/api/persons", (req, res, next) => {
+app.post("/api/persons", (req, res) => {
   let body = req.body;
   if (!body.name || !body.number) {
     return res.status(404).json({
@@ -25,10 +25,7 @@ app.post("/api/persons", (req, res, next) => {
       name: body.name,
       number: body.number,
     });
-    person
-      .save()
-      .then((savedPerson) => res.json(savedPerson))
-      .catch((error) => next(error));
+    person.save().then((savedPerson) => res.json(savedPerson));
   }
 });
 
@@ -82,15 +79,8 @@ app.use(unknownEndpoint);
 const errorHandler = (error, request, response, next) => {
   if (error.name === "CastError") {
     return response.status(404).send({ error: "malformatted id" });
-  } else if (error.name === "ValidationError") {
-    return response
-      .status(404)
-      .send(
-        "Validaton Error: Name must be at least 3 characters, and number should be at least 8 characters"
-      );
-  } else if (error.name === "MongoError") {
-    return response.status(404).json({ error: error.message });
   }
+
   next(error);
 };
 
