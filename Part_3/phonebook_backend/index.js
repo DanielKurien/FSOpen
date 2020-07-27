@@ -1,15 +1,38 @@
 require("dotenv").config();
 const express = require("express");
+const { response } = require("express");
 const app = express();
 const Person = require("./models/person");
 const morgan = require("morgan");
-const cors = require("cors");
 
 app.use(express.json());
 app.use(morgan("tiny"));
-app.use(cors());
-app.use(express.static("build"));
 
+<<<<<<< HEAD
+=======
+let persons = [
+  {
+    name: "Arto Hellas",
+    phone: "040-123456",
+    id: 1,
+  },
+  {
+    name: "Anthony Towns",
+    phone: "07-3483-23",
+    id: 2,
+  },
+  {
+    name: "Dan Ambramov",
+    phone: "7327-3283",
+    id: 3,
+  },
+  {
+    name: "Mary Poppendieck",
+    phone: "043-1248",
+    id: 4,
+  },
+];
+>>>>>>> parent of 11b4d68... Completed 3.9 - 3.11
 app.get("/api/persons", (req, res) => {
   Person.find({}).then((persons) => res.json(persons));
 });
@@ -52,7 +75,7 @@ app.delete("/api/persons/:id", (req, res) => {
   res.status(204).end();
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 app.listen(PORT, () => {
   console.log(`Server running on ${PORT}`);
 });
