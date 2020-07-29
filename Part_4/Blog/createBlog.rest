@@ -1,9 +1,9 @@
-POST http://localhost:3001/api/blogs
-Content-Type: application/json
+PUT http://localhost:3001/api/blogs/5f21d28c89dc0834f8c3725e
 
 {
-    "title":"The Last Dance",
-    "author": "James White",
-    "url":"google.com",
-    "likes":200
+    "title": "Kevin",
+    "author": "Edsger W. Dijkstra",
+    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
+    "likes": 12,
 }
+
