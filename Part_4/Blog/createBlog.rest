@@ -1,9 +1,10 @@
-PUT http://localhost:3001/api/blogs/5f21d28c89dc0834f8c3725e
+PUT http://localhost:3001/api/blogs/5f21d28c89dc0834f8c37260
+Content-Type: application/json
 
 {
-    "title": "Kevin",
-    "author": "Edsger W. Dijkstra",
-    "url": "http://www.cs.utexas.edu/~EWD/transcriptions/EWD08xx/EWD808.html",
-    "likes": 12,
+    "title": "daniel",
+    "author": "kevin",
+    "url": "nba",
+    "likes": 10
 }
 

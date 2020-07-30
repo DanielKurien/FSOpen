@@ -6,6 +6,10 @@ blogsRouter.get("/", async (req, res) => {
   res.json(blogs);
 });
 
+blogsRouter.get("/:id", async (req, res) => {
+  const blog = await Blog.findById(req.params.id);
+  res.json(blog);
+});
 blogsRouter.post("/", async (req, res, next) => {
   const blog = new Blog(req.body);
   await blog.save();
@@ -26,7 +30,10 @@ blogsRouter.put("/:id", async (req, res) => {
     url: body.url,
     likes: body.likes,
   };
-  await Blog.findByIdAndUpdate(req.params.id, blog, { new: true });
+
+  Blog.findByIdAndUpdate(req.params.id, blog, { new: true })
+    .then((updatedBlog) => res.json(updatedBlog))
+    .catch((error) => console.log(error));
 });
 
 module.exports = blogsRouter;
