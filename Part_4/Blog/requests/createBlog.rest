@@ -1,0 +1,10 @@
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+
+{
+    "title": "nba restart",
+    "author": "daniel",
+    "url": "nba",
+    "likes":100,
+    "userId": "5f2466154c52c93db8173ed0"
+}
