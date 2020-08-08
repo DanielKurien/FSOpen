@@ -13,6 +13,7 @@ const Blog = ({ blog }) => {
   const fullBlog = () => {
     return (
       <div>
+        <p>{blog.title}</p>
         <p>{blog.url}</p>
         <p>likes {blog.likes}</p>
         <p>{blog.author}</p>
@@ -23,9 +24,9 @@ const Blog = ({ blog }) => {
   const toggleBlog = () => {
     setShowBlog(!showBlog);
     if (showBlog) {
-      setButtonName("show");
-    } else {
       setButtonName("hide");
+    } else {
+      setButtonName("show");
     }
   };
   return (
